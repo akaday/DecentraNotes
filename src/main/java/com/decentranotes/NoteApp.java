@@ -34,13 +34,18 @@ public class NoteApp {
     }
 
     private void createNote (Scanner scanner) {
-        System.out.print("Enter note title: ");
-        String title = scanner.nextLine();
-        System.out.print("Enter note content: ");
-        String content = scanner.nextLine();
-        Note note = new Note(Integer.toString(notes.size() + 1), title, content);
-        notes.add(note);
-        System.out.println("Note created!");
+        try {
+            System.out.print("Enter note title: ");
+            String title = scanner.nextLine();
+            System.out.print("Enter note content: ");
+            String content = scanner.nextLine();
+            Note note = new Note(Integer.toString(notes.size() + 1), title, content);
+            notes.add(note);
+            System.out.println("Note created!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to create note");
+        }
     }
 
     private void viewNotes () {
