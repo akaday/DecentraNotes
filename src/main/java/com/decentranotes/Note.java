@@ -1,18 +1,27 @@
 package com.decentranotes;
 
+import javax.crypto.SecretKey;
+
 public class Note {
     private String id;
     private String title;
-    private String content;
+    private String encryptedContent;
+    private SecretKey key;
 
     // Constructor
-    public Note(String id, String title, String content) {
+    public Note(String id, String title, String content) throws Exception {
         this.id = id;
         this.title = title;
-        this.content = content;
+        this.key = EncryptionUtil.generateKey();
+        this.encryptedContent = EncryptionUtil.encrypt(content, this.key);
     }
 
-    // Getters and Setters
+    // Method to get decrypted content
+    public String getDecryptedContent() throws Exception {
+        return EncryptionUtil.decrypt(encryptedContent, key);
+    }
+
+    // Other getters and setters
     public String getId() {
         return id;
     }
@@ -29,20 +38,21 @@ public class Note {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     @Override
     public String toString() {
-        return "Note{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                '}';
+        try {
+            return "Note{" +
+                    "id='" + id + '\'' +
+                    ", title='" + title + '\'' +
+                    ", content='" + getDecryptedContent() + '\'' +
+                    '}';
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Note{" +
+                    "id='" + id + '\'' +
+                    ", title='" + title + '\'' +
+                    ", content='Error decrypting content'" +
+                    '}';
+        }
     }
 }
