@@ -1,0 +1,2 @@
+# DecentraNotes
+nostr
