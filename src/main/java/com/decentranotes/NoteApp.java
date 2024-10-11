@@ -14,7 +14,8 @@ public class NoteApp {
         while (true) {
             System.out.println("1. Create Note");
             System.out.println("2. View Notes");
-            System.out.println("3. Exit");
+            System.out.println("3. Update Note");
+            System.out.println("4. Exit");
             int choice = scanner.nextInt();
             scanner.nextLine(); // consume newline
 
@@ -26,6 +27,9 @@ public class NoteApp {
                     app.viewNotes();
                     break;
                 case 3:
+                    app.updateNote(scanner);
+                    break;
+                case 4:
                     System.exit(0);
                 default:
                     System.out.println("Invalid choice");
@@ -51,6 +55,26 @@ public class NoteApp {
     private void viewNotes () {
         for (Note note : notes) {
             System.out.println(note);
+        }
+    }
+
+    private void updateNote (Scanner scanner) {
+        try {
+            System.out.print("Enter note ID to update: ");
+            String id = scanner.nextLine();
+            for (Note note : notes) {
+                if (note.getId().equals(id)) {
+                    System.out.print("Enter new content: ");
+                    String content = scanner.nextLine();
+                    note.updateContent(content);
+                    System.out.println("Note updated!");
+                    return;
+                }
+            }
+            System.out.println("Note not found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to update note");
         }
     }
 }
