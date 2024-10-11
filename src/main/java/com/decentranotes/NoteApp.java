@@ -3,6 +3,7 @@ package com.decentranotes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class NoteApp {
     private List<Note> notes = new ArrayList<>();
@@ -15,7 +16,8 @@ public class NoteApp {
             System.out.println("1. Create Note");
             System.out.println("2. View Notes");
             System.out.println("3. Update Note");
-            System.out.println("4. Exit");
+            System.out.println("4. Search Notes");
+            System.out.println("5. Exit");
             int choice = scanner.nextInt();
             scanner.nextLine(); // consume newline
 
@@ -30,6 +32,9 @@ public class NoteApp {
                     app.updateNote(scanner);
                     break;
                 case 4:
+                    app.searchNotes(scanner);
+                    break;
+                case 5:
                     System.exit(0);
                 default:
                     System.out.println("Invalid choice");
@@ -75,6 +80,20 @@ public class NoteApp {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Failed to update note");
+        }
+    }
+
+    private void searchNotes (Scanner scanner) {
+        System.out.print("Enter search keyword: ");
+        String keyword = scanner.nextLine().toLowerCase();
+        List<Note> foundNotes = notes.stream()
+            .filter(note -> note.getTitle().toLowerCase().contains(keyword) || note.getDecryptedContent().toLowerCase().contains(keyword))
+            .collect(Collectors.toList());
+        
+        if (foundNotes.isEmpty()) {
+            System.out.println("No notes found with the given keyword.");
+        } else {
+            foundNotes.forEach(System.out::println);
         }
     }
 }
